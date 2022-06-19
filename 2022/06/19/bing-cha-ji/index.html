@@ -494,7 +494,7 @@ p[pa2]=pb2;
 <p>最后留一道不错的练习题：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2024">食物链</a>(带权并查集和扩展域并查集都能写)</p>
 <h2 id="可撤销并查集"><a href="#可撤销并查集" class="headerlink" title="可撤销并查集"></a>可撤销并查集</h2><p>顾名思义，可撤销并查集就是能撤销我们的合并操作的并查集，要撤销，我们就需要存储每一次修改的信息，然后就行回退，这时再使用路径压缩就会出现问题，如图。</p>
 <p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202206191353327.png" alt="image-20220619135318193"></p>
-<p>因此我们使用路径压缩，此时每次find的时间复杂度为$O(log n)$，那我们怎么撤销呢？我们发现，我们每次合并只会改变一个集合的大小和一个点的父亲，我们把这些都记录下来，就能撤销了。</p>
+<p>因此我们使用按秩合并，此时每次find的时间复杂度为$O(log n)$，那我们怎么撤销呢？我们发现，我们每次合并只会改变一个集合的大小和一个点的父亲，我们把这些都记录下来，就能撤销了。</p>
 <pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">vector&lt;pair&lt;int,int&gt;&gt; his_p,his_sz;
 int p[N],sz[N];//sz[i]表示以i为根的集合的大小，初始时sz[i]=1
 //我们每进行一次合并his_p和his_sz的就会多一个元素，因此我们可以根据vector的大小来标识不同的历史版本
