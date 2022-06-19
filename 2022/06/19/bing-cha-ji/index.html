@@ -443,85 +443,85 @@
 <p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202206190959038.png" alt="image-20220619095950928"></p>
 <p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202206191000153.png" alt="image-20220619100012085"></p>
 <p>首先我们看到区间和肯定会想到并查集，我们用$s_{i}$表示$\sum_{j=1}^{i} A_{i}$，那么如果我们已知$\sum_{i=l}^{r} A_{i}$，就相当于知道了$s_{r}-s_{l-1}$，如果最终只是问我们答案能否确定，那肯定很简单，我们用并查集维护$s$的集合，我们只需要先合并它给我们的所有$r$和$l-1$，然后查询的时候看$l-1$和$r$是否在一个集合内即可。然后我们另外开一个数组$d$记录每个点$x$的父亲节点和它之间的差$s[p[x]]-s[x]$， $p[x]$表示$x$的父亲，至于$d$数组的初始化就很简单了，$d[i]=0$，因为刚开始$p[i]=i$，然后先看代码，我再具体讲解。</p>
-<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">int l=read(),r=read();//read就是写的快读
-LL sum=read();
-l--;//前缀和为s[r]-s[l-1]
-LL a=l,b=r;
-l=find(l),r=find(r);//找到l-1，r的父亲p[l-1],p[r]
-if(l!=r){
-    p[l]=r;//合并集合，这里的l，r已经不是原来的l，r
-    d[l]=sum+d[b]-d[a];//更新距离，为什么这么写，看下面的图应该就理解了
-}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> l<span class="token operator">=</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>r<span class="token operator">=</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//read就是写的快读</span>
+LL sum<span class="token operator">=</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+l<span class="token operator">--</span><span class="token punctuation">;</span><span class="token comment">//前缀和为s[r]-s[l-1]</span>
+LL a<span class="token operator">=</span>l<span class="token punctuation">,</span>b<span class="token operator">=</span>r<span class="token punctuation">;</span>
+l<span class="token operator">=</span><span class="token function">find</span><span class="token punctuation">(</span>l<span class="token punctuation">)</span><span class="token punctuation">,</span>r<span class="token operator">=</span><span class="token function">find</span><span class="token punctuation">(</span>r<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//找到l-1，r的父亲p[l-1],p[r]</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span>l<span class="token operator">!=</span>r<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    p<span class="token punctuation">[</span>l<span class="token punctuation">]</span><span class="token operator">=</span>r<span class="token punctuation">;</span><span class="token comment">//合并集合，这里的l，r已经不是原来的l，r</span>
+    d<span class="token punctuation">[</span>l<span class="token punctuation">]</span><span class="token operator">=</span>sum<span class="token operator">+</span>d<span class="token punctuation">[</span>b<span class="token punctuation">]</span><span class="token operator">-</span>d<span class="token punctuation">[</span>a<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token comment">//更新距离，为什么这么写，看下面的图应该就理解了</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202206191142837.png" alt="image-20220619114246792"></p>
 <p>由于$find$函数调用的途中我们会改变节点的父亲，因此我们的$find$函数也需要改写。</p>
-<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">int find(int x){
-    if(p[x]!=x) {
-        int root=find(p[x]);//先记录下找到的父亲
-        d[x]+=d[p[x]];//x到新父亲的距离=x到旧父亲的距离+旧父亲到新父亲的距离
-        p[x]=root;
-    }
-    return p[x];
-}		<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> <span class="token function">find</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>p<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token operator">!=</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> root<span class="token operator">=</span><span class="token function">find</span><span class="token punctuation">(</span>p<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//先记录下找到的父亲</span>
+        d<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token operator">+=</span>d<span class="token punctuation">[</span>p<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token comment">//x到新父亲的距离=x到旧父亲的距离+旧父亲到新父亲的距离</span>
+        p<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token operator">=</span>root<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> p<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>		<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202206191156491.png" alt="image-20220619115605445"></p>
-<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">//查询就比较简单了
-int a=read(),b=read();
-a--;
-LL x=a,y=b;	
-a=find(a),b=find(b);
-if(a!=b) puts("UNKNOWN");
-else cout&lt;&lt;d[x]-d[y]&lt;&lt;endl;//注意，这里是d[x]-d[y]而不是d[a]-d[b]，因为a，b已经变成它们的父亲了<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">//查询就比较简单了</span>
+<span class="token keyword">int</span> a<span class="token operator">=</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>b<span class="token operator">=</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+a<span class="token operator">--</span><span class="token punctuation">;</span>
+LL x<span class="token operator">=</span>a<span class="token punctuation">,</span>y<span class="token operator">=</span>b<span class="token punctuation">;</span>	
+a<span class="token operator">=</span><span class="token function">find</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">,</span>b<span class="token operator">=</span><span class="token function">find</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span>a<span class="token operator">!=</span>b<span class="token punctuation">)</span> <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"UNKNOWN"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">else</span> cout<span class="token operator">&lt;&lt;</span>d<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token operator">-</span>d<span class="token punctuation">[</span>y<span class="token punctuation">]</span><span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span><span class="token comment">//注意，这里是d[x]-d[y]而不是d[a]-d[b]，因为a，b已经变成它们的父亲了</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>到这里我们差不多了解了带权并查集，这里我们维护的是元素间的差，我们也可以维护其它类型的权值，大家可以自己找点题练习。</p>
 <h2 id="扩展域并查集"><a href="#扩展域并查集" class="headerlink" title="扩展域并查集"></a>扩展域并查集</h2><p>我们知道并查集能维护具有传递性的关系，但当我们遇到诸如“敌人的敌人是朋友”这类关系时，普通的并查集就没那么好用了，这时候我们的扩展域并查集就登场了。我们把并查集的规模扩大一倍，并划分为两个种类，在相同种类中合并两个元素表示他们是朋友，在不同种类中合并表达他们是敌人，这样一个人敌人的敌人就和他在同一个种类中，就维护了“敌人的敌人是朋友”的这种关系。</p>
 <p>我们来道例题并写出代码加深一下理解。</p>
 <p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202206191250142.png" alt="image-20220619125054061"></p>
 <p>我们还是用前缀和的思想，用$sum[i]$表示$s[1\sim i]$中1的个数，如果$l\sim r$中有偶数个$1$，我们易知$sum[l-1]$和$sum[r]$的奇偶性相同，奇数个则相反，而对于$sum[i]$，假设$sum[y]$与它奇偶性相反，那么与$sum[y]$奇偶性相反的数奇偶性与$sum[i]$相同，符合我们上面阐述的关系，因此这题我们可以用扩展域并查集来写。另外这题$N$的范围较大，需要离散化，我图个方便就直接写了，懂思路才是最重要的。</p>
-<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">vector&lt;int&gt; p(2*n+2);//我们用0~n表示0~n的第一个种类，n+1~2*n+1表示0~n的第二个种类
-int a=read(),b=read();
-a--;
-int pa1=find(a),pb1=find(b);
-int pa2=find(a+n+1),pb2=find(b+n+1);
-//是偶数个时，这二者奇偶性相同
-if(pa1==pb2) break;//如果发现a，b奇偶性不同，说明矛盾
-//否则无矛盾，正常合并
-p[pa1]=pb1;
-p[pa2]=pb2;
-//奇数的情况也差不多，就不多写了<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> <span class="token function">p</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token operator">*</span>n<span class="token operator">+</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//我们用0~n表示0~n的第一个种类，n+1~2*n+1表示0~n的第二个种类</span>
+<span class="token keyword">int</span> a<span class="token operator">=</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>b<span class="token operator">=</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+a<span class="token operator">--</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> pa1<span class="token operator">=</span><span class="token function">find</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">,</span>pb1<span class="token operator">=</span><span class="token function">find</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> pa2<span class="token operator">=</span><span class="token function">find</span><span class="token punctuation">(</span>a<span class="token operator">+</span>n<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>pb2<span class="token operator">=</span><span class="token function">find</span><span class="token punctuation">(</span>b<span class="token operator">+</span>n<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//是偶数个时，这二者奇偶性相同</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span>pa1<span class="token operator">==</span>pb2<span class="token punctuation">)</span> <span class="token keyword">break</span><span class="token punctuation">;</span><span class="token comment">//如果发现a，b奇偶性不同，说明矛盾</span>
+<span class="token comment">//否则无矛盾，正常合并</span>
+p<span class="token punctuation">[</span>pa1<span class="token punctuation">]</span><span class="token operator">=</span>pb1<span class="token punctuation">;</span>
+p<span class="token punctuation">[</span>pa2<span class="token punctuation">]</span><span class="token operator">=</span>pb2<span class="token punctuation">;</span>
+<span class="token comment">//奇数的情况也差不多，就不多写了</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>另外这题也能用带权并查集来写，我们维护的权值只有1和0，两点之间距离为0时说明奇偶性相同，为1时说明奇偶性不同，然后计算距离时对2取模即可。</p>
 <p>最后留一道不错的练习题：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2024">食物链</a>(带权并查集和扩展域并查集都能写)</p>
 <h2 id="可撤销并查集"><a href="#可撤销并查集" class="headerlink" title="可撤销并查集"></a>可撤销并查集</h2><p>顾名思义，可撤销并查集就是能撤销我们的合并操作的并查集，要撤销，我们就需要存储每一次修改的信息，然后就行回退，这时再使用路径压缩就会出现问题，如图。</p>
 <p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202206191353327.png" alt="image-20220619135318193"></p>
 <p>因此我们使用按秩合并，此时每次find的时间复杂度为$O(log n)$，那我们怎么撤销呢？我们发现，我们每次合并只会改变一个集合的大小和一个点的父亲，我们把这些都记录下来，就能撤销了。</p>
-<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">vector&lt;pair&lt;int,int&gt;&gt; his_p,his_sz;
-int p[N],sz[N];//sz[i]表示以i为根的集合的大小，初始时sz[i]=1
-//我们每进行一次合并his_p和his_sz的就会多一个元素，因此我们可以根据vector的大小来标识不同的历史版本
-//不带路径压缩的find
-int find(int x){
-       while(p[x]!=x) x=p[x];
-       return x;
-   }
-//合并部分代码
-void merge(int a,int b){
-       int pa=find(a),pb=find(b);
-       if(pa==pb) return ;
-       if(sz[pa]&lt;sz[pb]) swap(pa,pb);
-       his_sz.push_back({pa,sz[pa]});//pa的大小改变了
-       sz[pa]=sz[pa]+sz[pb];//小的合并到大的上，即pb合并到pa上
-       his_p.push_back({pb,p[pb]});//pb的父亲改变了
-       p[pb]=pa;
-   }
-//撤销
-void roll(int his){//回到vector大小为his的版本
-       while(his_p.size()&gt;his){
-           p[his_p.back().first]=his_p.back().second;
-           his_p.pop_back();
-           sz[his_sz.back().first]=his_sz.back().second;
-           his_sz.pop_back();
-       }
-   }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">vector<span class="token operator">&lt;</span>pair<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span><span class="token keyword">int</span><span class="token operator">&gt;&gt;</span> his_p<span class="token punctuation">,</span>his_sz<span class="token punctuation">;</span>
+<span class="token keyword">int</span> p<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">,</span>sz<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token comment">//sz[i]表示以i为根的集合的大小，初始时sz[i]=1</span>
+<span class="token comment">//我们每进行一次合并his_p和his_sz的就会多一个元素，因此我们可以根据vector的大小来标识不同的历史版本</span>
+<span class="token comment">//不带路径压缩的find</span>
+<span class="token keyword">int</span> <span class="token function">find</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span><span class="token punctuation">{</span>
+       <span class="token keyword">while</span><span class="token punctuation">(</span>p<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token operator">!=</span>x<span class="token punctuation">)</span> x<span class="token operator">=</span>p<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">;</span>
+       <span class="token keyword">return</span> x<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token comment">//合并部分代码</span>
+<span class="token keyword">void</span> <span class="token function">merge</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span><span class="token keyword">int</span> b<span class="token punctuation">)</span><span class="token punctuation">{</span>
+       <span class="token keyword">int</span> pa<span class="token operator">=</span><span class="token function">find</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">,</span>pb<span class="token operator">=</span><span class="token function">find</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token keyword">if</span><span class="token punctuation">(</span>pa<span class="token operator">==</span>pb<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token punctuation">;</span>
+       <span class="token keyword">if</span><span class="token punctuation">(</span>sz<span class="token punctuation">[</span>pa<span class="token punctuation">]</span><span class="token operator">&lt;</span>sz<span class="token punctuation">[</span>pb<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token function">swap</span><span class="token punctuation">(</span>pa<span class="token punctuation">,</span>pb<span class="token punctuation">)</span><span class="token punctuation">;</span>
+       his_sz<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span><span class="token punctuation">{</span>pa<span class="token punctuation">,</span>sz<span class="token punctuation">[</span>pa<span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//pa的大小改变了</span>
+       sz<span class="token punctuation">[</span>pa<span class="token punctuation">]</span><span class="token operator">=</span>sz<span class="token punctuation">[</span>pa<span class="token punctuation">]</span><span class="token operator">+</span>sz<span class="token punctuation">[</span>pb<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token comment">//小的合并到大的上，即pb合并到pa上</span>
+       his_p<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span><span class="token punctuation">{</span>pb<span class="token punctuation">,</span>p<span class="token punctuation">[</span>pb<span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//pb的父亲改变了</span>
+       p<span class="token punctuation">[</span>pb<span class="token punctuation">]</span><span class="token operator">=</span>pa<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token comment">//撤销</span>
+<span class="token keyword">void</span> <span class="token function">roll</span><span class="token punctuation">(</span><span class="token keyword">int</span> his<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token comment">//回到vector大小为his的版本</span>
+       <span class="token keyword">while</span><span class="token punctuation">(</span>his_p<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">&gt;</span>his<span class="token punctuation">)</span><span class="token punctuation">{</span>
+           p<span class="token punctuation">[</span>his_p<span class="token punctuation">.</span><span class="token function">back</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>first<span class="token punctuation">]</span><span class="token operator">=</span>his_p<span class="token punctuation">.</span><span class="token function">back</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>second<span class="token punctuation">;</span>
+           his_p<span class="token punctuation">.</span><span class="token function">pop_back</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           sz<span class="token punctuation">[</span>his_sz<span class="token punctuation">.</span><span class="token function">back</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>first<span class="token punctuation">]</span><span class="token operator">=</span>his_sz<span class="token punctuation">.</span><span class="token function">back</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>second<span class="token punctuation">;</span>
+           his_sz<span class="token punctuation">.</span><span class="token function">pop_back</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>最后丢道练习题：<a target="_blank" rel="noopener" href="https://codeforces.com/contest/891/problem/C">Envy</a></p>
 <p>并查集就写到这里了，最重要的还是刷题练习！😋</p>
