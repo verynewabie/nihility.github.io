@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>字符串哈希</title>
+      <link href="/2022/06/20/zi-fu-chuan-ha-xi/"/>
+      <url>/2022/06/20/zi-fu-chuan-ha-xi/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>哈希是一种映射方法，我们用哈希把万物映射成一个整数值，字符串哈希就是把字符串映射为一个整数值，这样我们就能快速判断两个字符串是否相同。字母集$T$就是我们用到所有字母的集合，$|T|$就是其大小。$H$为哈希函数,$S$为字符串，$n$为其长度，$H(S)$即为字符串$S$的哈希值，$mod$是模数</p></blockquote><h2 id="字符串哈希"><a href="#字符串哈希" class="headerlink" title="字符串哈希"></a>字符串哈希</h2><p>字符串哈希最常用的方法就是把整个字符串当成一个$K$进制数，其中$K\ge |T|$，而我们遇到的题目中一般都满足$|T|\le 128$，我们可以选择$K=131、137$等等数值，<strong>最好是质数</strong>，因为我们计算的时候整数的值过大，我们需要取模。</p><p>按照这种方法，假设有字符串$S$，且其下标从1开始，那么$H(S)=\sum_{i=1}^{n}S[i]\times K^{n-i+1}$，这个值过大，我们需要取模，模数肯定也要选择<strong>比较大的质数</strong>，模数小会很容易出现冲突，即两个并不相同的字符串哈希值相同，我们可以取$mod=1e9+7、1e9+9、1610612741$，其中第三个是比较好的哈希模数。（因为前两个用的太多了，出题人更容易卡我们）但是就算如此，当我们需要检测的次数特别多时，我们还是很容易出错，因此我们可以用不同的$K$和$mod$算两个哈希值，这样出错概率就会<strong>大大降低</strong>。</p><p>另外，根据<a href="https://baike.baidu.com/item/%E7%94%9F%E6%97%A5%E6%82%96%E8%AE%BA/2715290?fr=aladdin">生日悖论</a>，我们使用的<strong>模数最好大于等于检测次数的平方</strong>。</p><h2 id="子串哈希"><a href="#子串哈希" class="headerlink" title="子串哈希"></a>子串哈希</h2><p>由上面的内容，我们很容易知道$H(S[l\sim r])=(S[l]\times K^{r-l}+\cdots + S[r])%mod$。</p><p>假设我们令$F[i]=H(S[1\sim i])$，那么有</p><p>$F[l-1]=(S[1]\times K^{l-2}+S[2]\times K^{l-3}+\cdots+S[l-1])%mod$</p><p>$F[r]=(S[1]\times K^{r-1}+S[2]\times K^{r-2}+\cdots +S[r])%mod$</p><p>我们易知$H(S[l\sim r])=F[r]-F[l]\times K^{r-l+1}$</p><p>因此我们只要求出$S$对应的$F$，就能快速求出其子串的哈希。</p><p>而我们也易得$F[i+1]=F[i]\times K+S[i+1]$</p><p>另外，如果给我们$H(S[l_{1}\sim r_{1}])$和$H(S[l_{2}\sim r_{2}])$那么我们可以快速得到这两个字串拼接起来后得到的字符串的哈希值为$H(S[l_{1}\sim r_{1}])\times K^{r_{2}-l_{2}+1}+H(S[l_{2}\sim r_{2}])$，由此我们想到如果我们要修改字符串的话，我们就可以用线段树来维护字符串的哈希值了！</p><h2 id="题目练习"><a href="#题目练习" class="headerlink" title="题目练习"></a>题目练习</h2><p>这几天军训比较懒，所以就没有结合例题来讲，放几道推荐题目吧。</p><p>模板题：<a href="https://www.luogu.com.cn/problem/P3370">字符串哈希</a></p><p>思维题+用字符串哈希判断回文串：<a href="https://codeforces.com/gym/103729/problem/J">Palindrome Reversion</a></p><p>二分+字符串哈希找最长回文串：<a href="https://www.luogu.com.cn/problem/SP7586">Number of Palindromes</a></p><p>线段树+字符串哈希：<a href="https://codeforces.com/contest/580/problem/E">Kefa and Watch</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 字符串 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 字符串哈希 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>并查集</title>
       <link href="/2022/06/19/bing-cha-ji/"/>
       <url>/2022/06/19/bing-cha-ji/</url>
