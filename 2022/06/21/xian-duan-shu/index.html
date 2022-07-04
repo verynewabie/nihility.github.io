@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <meta name="keywords" content="字符串哈希, nilihity">
+    <meta name="keywords" content="线段树, nilihity">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -18,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>字符串哈希 | nilihity</title>
+    <title>线段树 | nilihity</title>
     <link rel="icon" type="image/png" href="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/erciyuan/202204300004888.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -251,12 +251,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">字符串哈希</h1>
+                    <h1 class="description center-align post-title">线段树</h1>
                 </div>
             </div>
         </div>
@@ -372,8 +372,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%93%88%E5%B8%8C/">
-                                <span class="chip bg-color">字符串哈希</span>
+                            <a href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/">
+                                <span class="chip bg-color">线段树</span>
                             </a>
                         
                     </div>
@@ -384,8 +384,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="post-category">
-                                字符串
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-category">
+                                数据结构
                             </a>
                         
                     </div>
@@ -397,28 +397,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-06-20
+                    2022-06-21
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-06-20
+                    2022-07-04
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    769
+                    106
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    1 分
                 </div>
                 
 
@@ -436,25 +436,13 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <blockquote>
-<p>哈希是一种映射方法，我们用哈希把万物映射成一个整数值，字符串哈希就是把字符串映射为一个整数值，这样我们就能快速判断两个字符串是否相同。字母集$T$就是我们用到所有字母的集合，$|T|$就是其大小。$H$为哈希函数,$S$为字符串，$n$为其长度，$H(S)$即为字符串$S$的哈希值，$mod$是模数</p>
-</blockquote>
-<h2 id="字符串哈希"><a href="#字符串哈希" class="headerlink" title="字符串哈希"></a>字符串哈希</h2><p>字符串哈希最常用的方法就是把整个字符串当成一个$K$进制数，其中$K\ge |T|$，而我们遇到的题目中一般都满足$|T|\le 128$，我们可以选择$K=131、137$等等数值，<strong>最好是质数</strong>，因为我们计算的时候整数的值过大，我们需要取模。</p>
-<p>按照这种方法，假设有字符串$S$，且其下标从1开始，那么$H(S)=\sum_{i=1}^{n}S[i]\times K^{n-i+1}$，这个值过大，我们需要取模，模数肯定也要选择<strong>比较大的质数</strong>，模数小会很容易出现冲突，即两个并不相同的字符串哈希值相同，我们可以取$mod=1e9+7、1e9+9、1610612741$，其中第三个是比较好的哈希模数。（因为前两个用的太多了，出题人更容易卡我们）但是就算如此，当我们需要检测的次数特别多时，我们还是很容易出错，因此我们可以用不同的$K$和$mod$算两个哈希值，这样出错概率就会<strong>大大降低</strong>。</p>
-<p>另外，根据<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%94%9F%E6%97%A5%E6%82%96%E8%AE%BA/2715290?fr=aladdin">生日悖论</a>，我们使用的<strong>模数最好大于等于检测次数的平方</strong>。</p>
-<h2 id="子串哈希"><a href="#子串哈希" class="headerlink" title="子串哈希"></a>子串哈希</h2><p>由上面的内容，我们很容易知道$H(S[l\sim r])=(S[l]\times K^{r-l}+\cdots + S[r])%mod$。</p>
-<p>假设我们令$F[i]=H(S[1\sim i])$，那么有</p>
-<p>$F[l-1]=(S[1]\times K^{l-2}+S[2]\times K^{l-3}+\cdots+S[l-1])%mod$</p>
-<p>$F[r]=(S[1]\times K^{r-1}+S[2]\times K^{r-2}+\cdots +S[r])%mod$</p>
-<p>我们易知$H(S[l\sim r])=F[r]-F[l]\times K^{r-l+1}$</p>
-<p>因此我们只要求出$S$对应的$F$，就能快速求出其子串的哈希。</p>
-<p>而我们也易得$F[i+1]=F[i]\times K+S[i+1]$</p>
-<p>另外，如果给我们$H(S[l_{1}\sim r_{1}])$和$H(S[l_{2}\sim r_{2}])$那么我们可以快速得到这两个字串拼接起来后得到的字符串的哈希值为$H(S[l_{1}\sim r_{1}])\times K^{r_{2}-l_{2}+1}+H(S[l_{2}\sim r_{2}])$，由此我们想到如果我们要修改字符串的话，我们就可以用线段树来维护字符串的哈希值了！</p>
-<h2 id="题目练习"><a href="#题目练习" class="headerlink" title="题目练习"></a>题目练习</h2><p>这几天军训比较懒，所以就没有结合例题来讲，放几道推荐题目吧。</p>
-<p>模板题：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3370">字符串哈希</a></p>
-<p>思维题+用字符串哈希判断回文串：<a target="_blank" rel="noopener" href="https://codeforces.com/gym/103729/problem/J">Palindrome Reversion</a></p>
-<p>二分+字符串哈希找最长回文串：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/SP7586">Number of Palindromes</a></p>
-<p>线段树+字符串哈希：<a target="_blank" rel="noopener" href="https://codeforces.com/contest/580/problem/E">Kefa and Watch</a></p>
+                <p>本文章以线段树的拓展为主，不会讲解基础内容。另外本人目前比较忙，将在军训和第三学期后更新内容，现只列出大纲和例题。</p>
+<h2 id="线段树妙用"><a href="#线段树妙用" class="headerlink" title="线段树妙用"></a>线段树妙用</h2><p><a target="_blank" rel="noopener" href="https://ac.nowcoder.com/acm/contest/19684/B">HH的项链</a></p>
+<h2 id="多tag后效性处理"><a href="#多tag后效性处理" class="headerlink" title="多tag后效性处理"></a>多tag后效性处理</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2023">维护序列</a></p>
+<h2 id="势能线段树"><a href="#势能线段树" class="headerlink" title="势能线段树"></a>势能线段树</h2><p><a target="_blank" rel="noopener" href="https://codeforces.com/gym/103107/problem/A">And RMQ</a></p>
+<h2 id="线段树合并"><a href="#线段树合并" class="headerlink" title="线段树合并"></a>线段树合并</h2><p><a target="_blank" rel="noopener" href="https://codeforces.com/contest/1009/problem/F">Dominant Indices</a></p>
+<h2 id="线段树分裂"><a href="#线段树分裂" class="headerlink" title="线段树分裂"></a>线段树分裂</h2><p><a target="_blank" rel="noopener" href="https://codeforces.com/contest/911/problem/G">Mass Change Queries</a></p>
+<h2 id="可持久化线段树（主席树）"><a href="#可持久化线段树（主席树）" class="headerlink" title="可持久化线段树（主席树）"></a>可持久化线段树（主席树）</h2><p><a target="_blank" rel="noopener" href="https://codeforces.com/gym/103687/problem/F">Easy Fix</a></p>
 
                 
             </div>
@@ -481,7 +469,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://verynewabie.github.io/2022/06/20/zi-fu-chuan-ha-xi/">http://verynewabie.github.io/2022/06/20/zi-fu-chuan-ha-xi/</a>
+                    <a href="http://verynewabie.github.io/2022/06/21/xian-duan-shu/">http://verynewabie.github.io/2022/06/21/xian-duan-shu/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -519,8 +507,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%93%88%E5%B8%8C/">
-                                    <span class="chip bg-color">字符串哈希</span>
+                                <a href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/">
+                                    <span class="chip bg-color">线段树</span>
                                 </a>
                             
                         </div>
@@ -827,9 +815,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2022/06/21/xian-duan-shu/">
                     <div class="card-image">
@@ -847,9 +836,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-06-21
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-06-21
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -862,6 +851,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -880,13 +870,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/06/19/bing-cha-ji/">
+                <a href="/2022/06/20/zi-fu-chuan-ha-xi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="并查集">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="字符串哈希">
                         
-                        <span class="card-title">并查集</span>
+                        <span class="card-title">字符串哈希</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -897,14 +887,14 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-06-19
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-06-20
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-category">
-                                    数据结构
+                            <a href="/categories/%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="post-category">
+                                    字符串
                                 </a>
                             
                             
@@ -914,8 +904,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/">
-                        <span class="chip bg-color">并查集</span>
+                    <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%93%88%E5%B8%8C/">
+                        <span class="chip bg-color">字符串哈希</span>
                     </a>
                     
                 </div>

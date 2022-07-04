@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>线段树</title>
+      <link href="/2022/06/21/xian-duan-shu/"/>
+      <url>/2022/06/21/xian-duan-shu/</url>
+      
+        <content type="html"><![CDATA[<p>本文章以线段树的拓展为主，不会讲解基础内容。另外本人目前比较忙，将在军训和第三学期后更新内容，现只列出大纲和例题。</p><h2 id="线段树妙用"><a href="#线段树妙用" class="headerlink" title="线段树妙用"></a>线段树妙用</h2><p><a href="https://ac.nowcoder.com/acm/contest/19684/B">HH的项链</a></p><h2 id="多tag后效性处理"><a href="#多tag后效性处理" class="headerlink" title="多tag后效性处理"></a>多tag后效性处理</h2><p><a href="https://www.luogu.com.cn/problem/P2023">维护序列</a></p><h2 id="势能线段树"><a href="#势能线段树" class="headerlink" title="势能线段树"></a>势能线段树</h2><p><a href="https://codeforces.com/gym/103107/problem/A">And RMQ</a></p><h2 id="线段树合并"><a href="#线段树合并" class="headerlink" title="线段树合并"></a>线段树合并</h2><p><a href="https://codeforces.com/contest/1009/problem/F">Dominant Indices</a></p><h2 id="线段树分裂"><a href="#线段树分裂" class="headerlink" title="线段树分裂"></a>线段树分裂</h2><p><a href="https://codeforces.com/contest/911/problem/G">Mass Change Queries</a></p><h2 id="可持久化线段树（主席树）"><a href="#可持久化线段树（主席树）" class="headerlink" title="可持久化线段树（主席树）"></a>可持久化线段树（主席树）</h2><p><a href="https://codeforces.com/gym/103687/problem/F">Easy Fix</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据结构 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 线段树 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>字符串哈希</title>
       <link href="/2022/06/20/zi-fu-chuan-ha-xi/"/>
       <url>/2022/06/20/zi-fu-chuan-ha-xi/</url>
