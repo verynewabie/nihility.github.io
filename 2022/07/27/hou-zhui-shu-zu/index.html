@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <meta name="keywords" content="字符串哈希, nihility">
+    <meta name="keywords" content="后缀数组, nihility">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -18,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>字符串哈希 | nihility</title>
+    <title>后缀数组 | nihility</title>
     <link rel="icon" type="image/png" href="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/erciyuan/202204300004888.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -251,12 +251,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">字符串哈希</h1>
+                    <h1 class="description center-align post-title">后缀数组</h1>
                 </div>
             </div>
         </div>
@@ -372,8 +372,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%93%88%E5%B8%8C/">
-                                <span class="chip bg-color">字符串哈希</span>
+                            <a href="/tags/%E5%90%8E%E7%BC%80%E6%95%B0%E7%BB%84/">
+                                <span class="chip bg-color">后缀数组</span>
                             </a>
                         
                     </div>
@@ -397,28 +397,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-06-20
+                    2022-07-27
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-06-20
+                    2022-07-27
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    769
+                    3.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    18 分
                 </div>
                 
 
@@ -437,24 +437,374 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <blockquote>
-<p>哈希是一种映射方法，我们用哈希把万物映射成一个整数值，字符串哈希就是把字符串映射为一个整数值，这样我们就能快速判断两个字符串是否相同。字母集$T$就是我们用到所有字母的集合，$|T|$就是其大小。$H$为哈希函数,$S$为字符串，$n$为其长度，$H(S)$即为字符串$S$的哈希值，$mod$是模数</p>
+<p>这里讲的是倍增做法，至于DC3的做法，看我以后能不能学会吧。</p>
 </blockquote>
-<h2 id="字符串哈希"><a href="#字符串哈希" class="headerlink" title="字符串哈希"></a>字符串哈希</h2><p>字符串哈希最常用的方法就是把整个字符串当成一个$K$进制数，其中$K\ge |T|$，而我们遇到的题目中一般都满足$|T|\le 128$，我们可以选择$K=131、137$等等数值，<strong>最好是质数</strong>，因为我们计算的时候整数的值过大，我们需要取模。</p>
-<p>按照这种方法，假设有字符串$S$，且其下标从1开始，那么$H(S)=\sum_{i=1}^{n}S[i]\times K^{n-i+1}$，这个值过大，我们需要取模，模数肯定也要选择<strong>比较大的质数</strong>，模数小会很容易出现冲突，即两个并不相同的字符串哈希值相同，我们可以取$mod=1e9+7、1e9+9、1610612741$，其中第三个是比较好的哈希模数。（因为前两个用的太多了，出题人更容易卡我们）但是就算如此，当我们需要检测的次数特别多时，我们还是很容易出错，因此我们可以用不同的$K$和$mod$算两个哈希值，这样出错概率就会<strong>大大降低</strong>。</p>
-<p>另外，根据<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%94%9F%E6%97%A5%E6%82%96%E8%AE%BA/2715290?fr=aladdin">生日悖论</a>，我们使用的<strong>模数最好大于等于检测次数的平方</strong>。</p>
-<h2 id="子串哈希"><a href="#子串哈希" class="headerlink" title="子串哈希"></a>子串哈希</h2><p>由上面的内容，我们很容易知道$H(S[l\sim r])=(S[l]\times K^{r-l}+\cdots + S[r])%mod$。</p>
-<p>假设我们令$F[i]=H(S[1\sim i])$，那么有</p>
-<p>$F[l-1]=(S[1]\times K^{l-2}+S[2]\times K^{l-3}+\cdots+S[l-1])%mod$</p>
-<p>$F[r]=(S[1]\times K^{r-1}+S[2]\times K^{r-2}+\cdots +S[r])%mod$</p>
-<p>我们易知$H(S[l\sim r])=F[r]-F[l]\times K^{r-l+1}$</p>
-<p>因此我们只要求出$S$对应的$F$，就能快速求出其子串的哈希。</p>
-<p>而我们也易得$F[i+1]=F[i]\times K+S[i+1]$</p>
-<p>另外，如果给我们$H(S[l_{1}\sim r_{1}])$和$H(S[l_{2}\sim r_{2}])$那么我们可以快速得到这两个字串拼接起来后得到的字符串的哈希值为$H(S[l_{1}\sim r_{1}])\times K^{r_{2}-l_{2}+1}+H(S[l_{2}\sim r_{2}])$，由此我们想到如果我们要修改字符串的话，我们就可以用线段树来维护字符串的哈希值了！</p>
-<h2 id="题目练习"><a href="#题目练习" class="headerlink" title="题目练习"></a>题目练习</h2><p>这几天军训比较懒，所以就没有结合例题来讲，放几道推荐题目吧。</p>
-<p>模板题：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3370">字符串哈希</a></p>
-<p>思维题+用字符串哈希判断回文串：<a target="_blank" rel="noopener" href="https://codeforces.com/gym/103729/problem/J">Palindrome Reversion</a></p>
-<p>二分+字符串哈希找最长回文串：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/SP7586">Number of Palindromes</a></p>
-<p>线段树+字符串哈希：<a target="_blank" rel="noopener" href="https://codeforces.com/contest/580/problem/E">Kefa and Watch</a></p>
+<h2 id="作用介绍"><a href="#作用介绍" class="headerlink" title="作用介绍"></a>作用介绍</h2><p>我们有一个长度为$n$的字符串$s$，下标从$1$开始，我们用编号为$i$的后缀表示从$i$位置开始的后缀，这样就一共有$n$个后缀，后缀数组的作用就是将所有的后缀按字典序排序(从小到大)，我们用$sa$数组、$rk$数组、$height$数组存储求得的信息</p>
+<p>$sa[i]$代表排名第$i$位的后缀的编号</p>
+<p>$rk[i]$代表编号为$i$的后缀的排名</p>
+<p>$height[i]$代表排名为$i$的后缀和排名为$i-1$的后缀的最长公共前缀，很明显，$height[1]=0$</p>
+<p>如果$s=aababb$，那么我们有6个后缀：$aababb、ababb、babb、abb、bb、b$，最后我们求得的各数组值如下(下标从小到大)：</p>
+<p>$sa：1，2，4，6，3，5$</p>
+<p>$rk：1，2，5，3，6，4$</p>
+<p>$height：0，1，2，0，1，1$</p>
+<h2 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h2><p>我们先按照每个后缀的第一个字符对所有后缀排序，第一个字符相同的后缀之间的相对顺序不变(基数排序，时间复杂度$O(n)$)，然后倍增地进行。</p>
+<p>当所有后缀按前$k$个字符排好序后，我们考虑按前$2k$个字符来排序，前$k$个字符为第一关键字，$k+1\sim 2k$个字符为第二关键字，先按第二关键字排序，再按第一关键字排序，其中使用离散化。</p>
+<p>然后对于求$height[i]$，设$h[i]$表示$height[rk[i]]$，即排名为i的后缀与排名在它前一个的后缀的最长公共前缀，而$h[i]\ge h[i-1]-1$，我们可以$O(n)$的求出$height$数组，时间复杂度分析类似于$KMP$算法，采用的是势能分析法。</p>
+<p>关于$h[i]\ge h[i-1]-1$的证明：</p>
+<p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202207262218712.png" alt="image-20220726221845492"></p>
+<p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202207262219171.png" alt="image-20220726221910009"></p>
+<p><strong>Talk is cheap，show me the code.</strong></p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>$copy$的$y$总代码，加了注释，顺便把可能越界的地方改了。</p>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+const int N = 1000010;
+int n, m;
+char s[N];
+//sa是排名对应的编号,rk是编号对应的排名
+int sa[N], x[N], y[N], c[N], rk[N], height[N];//x是按第一关键字的排名,y是按第二关键字的排名,x是编号对应排名,y是排名对应编号
+void get_sa(){
+    //所有后缀首先按第一个字符进行基数排序
+    for (int i = 1; i &lt;= n; i ++ ) c[x[i] = s[i]] ++ ;
+    for (int i = 2; i &lt;= m; i ++ ) c[i] += c[i - 1];
+    //从后往前可以保证排序稳定
+    for (int i = n; i; i -- ) sa[c[x[i]] -- ] = i;
+
+    for (int k = 1; k &lt;= n; k &lt;&lt;= 1){//倍增,当前已按前k个字母排好序
+        int num = 0;
+        
+        //按第二关键字排序
+        for (int i = n - k + 1; i &lt;= n; i ++ ) y[ ++ num] = i;//后k个字符没有第二关键字,因此排名最靠前
+        for (int i = 1; i &lt;= n; i ++ )//其它的取决于它前面k个位置处的第一关键字的排名,按第一关键字的排名顺序枚举
+            if (sa[i] &gt; k)
+                y[ ++ num] = sa[i] - k;
+        
+        //按第一关键字排序
+        for (int i = 1; i &lt;= m; i ++ ) c[i] = 0;
+        for (int i = 1; i &lt;= n; i ++ ) c[x[i]] ++ ;
+        for (int i = 2; i &lt;= m; i ++ ) c[i] += c[i - 1];
+        //从后往前,保证第一关键字相同时第二关键字排好的相对顺序不变
+        //y[i]是排名为i的对应的编号,看不懂的推荐看看基数排序的双关键字排序
+        for (int i = n; i; i -- ) sa[c[x[y[i]]] -- ] = y[i], y[i] = 0;
+        //y没用了
+        swap(x, y);
+        //排名为1的对应编号的排名为1
+        x[sa[1]] = 1, num = 1;
+        for (int i = 2; i &lt;= n; i ++ )
+            //看看是否有相同的,第一关键字和第二关键字都要比较
+            x[sa[i]] = (y[sa[i]] == y[sa[i - 1]] &amp;&amp; sa[i] + k &lt;= n &amp;&amp; sa[i - 1] + k &lt;= n &amp;&amp; y[sa[i] + k] == y[sa[i - 1] + k]) ? num : ++ num;
+        if (num == n) break;//已经排完了
+        m = num;//修改下离散的范围
+    }
+}
+void get_height(){
+    for (int i = 1; i &lt;= n; i ++ ) rk[sa[i]] = i;
+    for (int i = 1, k = 0; i &lt;= n; i ++ ){
+        if (rk[i] == 1) continue;
+        if (k) k -- ;
+        int j = sa[rk[i] - 1];
+        while (i + k &lt;= n &amp;&amp; j + k &lt;= n &amp;&amp; s[i + k] == s[j + k]) k ++ ;
+        height[rk[i]] = k;
+    }
+}
+int main(){
+    scanf("%s", s + 1);//读入需要处理的字符串
+    n = strlen(s + 1), m = 122;//m是离散化的数据范围,因为一般处理的字符中ASCII码最大的也就是z,所以这里赋值为122
+    get_sa();
+    get_height();
+    return 0;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="求不同子串个数"><a href="#求不同子串个数" class="headerlink" title="求不同子串个数"></a>求不同子串个数</h2><p>给定一个字符串，有了$height$数组，我们就很容易求出不同子串个数(即字典序不同)，我们已经按字典序给所有的后缀排好序，不同子串个数就相当于所有后缀的不同前缀个数。我们按字典序从前往后遍历所有后缀。</p>
+<p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202207271423852.png" alt="image-20220727142323709"></p>
+<p>很明显，第一个后缀的所有前缀都应该被我们统计进答案，而第二个后缀的前缀恰有$height[i]$个是与前面的重复的，这样我们扫一遍$height$数组即可得到本质不同子串个数了。有同学可能会问，你这样统计到排名为i的后缀时，有没有可能与前面的后缀有一些公共前缀没减去？答案是：<strong>不会</strong>！</p>
+<p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202207271429499.png" alt="image-20220727142927454"></p>
+<p>当出现如图所示情况时我们会有上述错误，然而这种清况<strong>不可能出现</strong>，因为我们在上面得到了$lcp(i,j)=min(lcp(i,k),lcp(k,j))(i\le k \le j)$</p>
+<p>代码很简单。</p>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">LL ans=0;//记录答案
+for(int i=1;i&lt;=n;i++){//根据排名遍历
+    int id=sa[i];//找到对应编号
+    int len=n-id+1;//计算出长度
+    ans+=len-height[i];//统计答案
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="后缀排序"><a href="#后缀排序" class="headerlink" title="后缀排序"></a>后缀排序</h2><p>板子题：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3809">后缀排序</a></p>
+<h2 id="品酒大会"><a href="#品酒大会" class="headerlink" title="品酒大会"></a>品酒大会</h2><p>$NOI2015$：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2178">品酒大会</a></p>
+<p>两杯酒$l、r$是$k$相似的，等价于$lcp(i，j)\ge k$，当我们求两杯$k$相似的酒相调的方案数时，我们可以考虑该字符串所有后缀按字典序排序的序列，我们发现可以相调的酒被分成了若干段。(因为我们有性质:$lcp(i,j)=min(lcp(i,k),lcp(k,j))(i\le k \le j)$)，我们只需要知道这些段的大小$sz$，方案数就是$sz\times (sz-1)\div 2$，然后我们考虑倒着来求，因为这样的话刚开始所有酒都是单独一段，我们后面只需不断合并，这样比正着分裂好做得多(我还不知道正着能不能做)，合并的同时维护每一段的最大值、次大值、最小值、次小值用来求可以得到的最大美味度。</p>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;bits/stdc++.h&gt;
+#define x first 
+#define y second
+#define endl '\n'
+#define lowbit(x) ((x)&amp;(-x))
+#define all(x) (x).begin(),(x).end()
+#define mp make_pair
+#define pb push_back
+#define SZ(x) ((int)(x).size())
+#define rep(i,a,n) for (int i=a;i&lt;n;i++)
+#define per(i,a,n) for (int i=n-1;i&gt;=a;i--)
+using namespace std;
+typedef pair&lt;int,int&gt; PII;
+typedef vector&lt;int&gt; VI;
+typedef long long LL;
+typedef unsigned long long ULL;
+typedef double DB;
+mt19937 randint(random_device{}());
+mt19937_64 randLL(random_device{}());
+template&lt;typename T=int&gt; 
+T gcd(T a,T b){return b?gcd(b,a%b):a;}
+template&lt;typename T=int&gt; 
+T qmi(T a,T b,T p){T res=1;while(b){if(b&amp;1)res=(LL)res*a%p;b&gt;&gt;=1;a=(LL)a*a%p;}return res%p;}
+template&lt;typename T=int&gt;
+T read(){
+	T x=0,f=1;
+	char ch=getchar();
+	while(ch&lt;'0'||ch&gt;'9'){
+		if(ch=='-')
+			f=-1;
+		ch=getchar();
+	}
+	while(ch&gt;='0'&amp;&amp;ch&lt;='9'){
+		x=x*10+ch-'0';
+		ch=getchar();
+	}
+	return x*f;
+}
+//并查集板子
+struct DSU{
+	vector&lt;int&gt; p,sz;
+	DSU(int n=0):p(n+1),sz(n+1){for(int i=1;i&lt;=n;i++) p[i]=i,sz[i]=1;}
+	void init(int n){
+		p.resize(n+1);
+		sz.resize(n+1);
+		for(int i=1;i&lt;=n;i++) p[i]=i,sz[i]=1;
+	}
+	int find(int x){
+		if(p[x]!=x) p[x]=find(p[x]);
+		return p[x];
+	}
+	void merge(int a,int b){
+		a=find(a),b=find(b);
+		if(a!=b) p[a]=b,sz[b]+=sz[a];
+	}
+	bool same(int a,int b){
+		a=find(a),b=find(b);
+		return a==b;
+	}
+	int cnt(){
+		int res=0;
+		for(int i=1;i&lt;p.size();i++){
+			if(p[i]==i) 
+				res++;
+		}
+		return res;
+	}
+};
+//----------------------------------------head------------------------------------
+const int mod=1e9+7,N=3e5+10;
+const LL INF=2e18;
+const double eps=1e-6;
+using PLL=pair&lt;LL,LL&gt;;
+int n,m,w[N];
+char s[N];
+int sa[N],x[N],y[N],c[N],rk[N],height[N];
+LL ma2[N],mi2[N],mi[N],ma[N];
+vector&lt;int&gt; to[N];
+PLL ans[N];
+LL cnt,maxans=-INF;
+DSU dsu;
+//后缀数组板子
+void get_sa(){
+	for(int i=1;i&lt;=n;i++) c[x[i]=s[i]]++;
+	for(int i=2;i&lt;=m;i++) c[i]+=c[i-1];
+	for(int i=n;i;i--) sa[c[x[i]]--]=i;
+	for(int k=1;k&lt;=n;k&lt;&lt;=1){
+		int num=0;
+		for(int i=n-k+1;i&lt;=n;i++) y[++num]=i;
+		for(int i=1;i&lt;=n;i++)
+			if(sa[i]&gt;k)
+				y[++num]=sa[i]-k;
+		for(int i=1;i&lt;=m;i++) c[i]=0;
+		for(int i=1;i&lt;=n;i++) c[x[i]]++;
+		for(int i=2;i&lt;=m;i++) c[i]+=c[i-1];
+		for(int i=n;i;i--) sa[c[x[y[i]]]--]=y[i],y[i]=0;
+		swap(x,y);
+		x[sa[1]]=1,num=1;
+		for(int i=2;i&lt;=n;i++)
+			x[sa[i]]=(y[sa[i]]==y[sa[i-1]]&amp;&amp;sa[i]+k&lt;=n&amp;&amp;sa[i-1]+k&lt;=n&amp;&amp;y[sa[i]+k]==y[sa[i-1]+k])?num:++num;
+		if(num==n) break;
+		m=num;
+	}
+}
+void get_height(){
+	for(int i=1;i&lt;=n;i++) rk[sa[i]]=i;
+	for(int i=1,k=0;i&lt;=n;i++){
+		if(rk[i]==1) continue;
+		if(k) k--;
+		int j=sa[rk[i]-1];
+		while(i+k&lt;=n&amp;&amp;j+k&lt;=n&amp;&amp;s[i+k]==s[j+k]) k++;
+		height[rk[i]]=k;
+	}
+}
+LL get(int x){
+	return 1ll*(x-1)*x/2;
+}
+void calc(int x){
+	for(auto tar:to[x]){//每次是合并它和它的前一个,tar是排名
+		int a=dsu.find(tar-1),b=dsu.find(tar);
+		cnt-=get(dsu.sz[a])+get(dsu.sz[b]);//减去原来这两块的贡献
+		dsu.merge(a,b);//把a合并到b上
+		cnt+=get(dsu.sz[b]);//加上新的一块的贡献
+        //维护新一块的最大值、最小值、次大值、次小值
+		if(ma[a]&gt;=ma[b]){
+			ma2[b]=max(ma2[a],ma[b]);
+			ma[b]=ma[a];
+		}
+		else ma2[b]=max(ma[a],ma2[b]);
+		if(mi[a]&lt;=mi[b]){
+			mi2[b]=min(mi2[a],mi[b]);
+			mi[b]=mi[a];
+		}
+		else mi2[b]=min(mi2[b],mi[a]);
+        //更新答案
+		maxans=max(maxans,max(mi[b]*mi2[b],ma[b]*ma2[b]));
+	}
+	if(maxans==-INF) ans[x]={cnt,0};
+	else ans[x]={cnt,maxans};
+}
+void solve(){
+	n=read(),m='z';
+	dsu.init(n);
+	scanf("%s",s+1);
+	for(int i=1;i&lt;=n;i++) w[i]=read();
+	get_sa();
+	get_height();
+	for(int i=2;i&lt;=n;i++) to[height[i]].pb(i);//因为我们每次合并是和前一个合并，因此不需要0
+	for(int i=1;i&lt;=n;i++){//按排名顺序记录每一段的信息
+		ma[i]=mi[i]=w[sa[i]];
+		ma2[i]=-INF,mi2[i]=INF;
+	}
+	for(int i=n-1;i&gt;=0;i--) calc(i);//倒着合并，先把height[i]==n-1的合并,然后以此类推
+	for(int i=0;i&lt;n;i++) printf("%lld %lld\n",ans[i].x,ans[i].y);
+}
+signed main(){
+	int t=1;
+	while(t--) solve();
+	return 0;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="生成魔咒"><a href="#生成魔咒" class="headerlink" title="生成魔咒"></a>生成魔咒</h2><p>$SDOI2016$：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4070">生成魔咒</a></p>
+<p>之前我们已经介绍了如何求一个字符串的不同子串个数，这次我们要求的<strong>好像</strong>是一个动态的问题，这让我们难以下手。然而，我们巧妙转换，我们倒着读入字符串，而一个字符串不管正着还是倒着其不同子串个数还是一样的，每次从前面删除一个字符，就可以完成题目的要求，删除的话我们使用一个双链表，$O(1)$删除。</p>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;bits/stdc++.h&gt;
+#define x first 
+#define y second
+#define endl '\n'
+#define lowbit(x) ((x)&amp;(-x))
+#define all(x) (x).begin(),(x).end()
+#define mp make_pair
+#define pb push_back
+#define SZ(x) ((int)(x).size())
+#define rep(i,a,n) for (int i=a;i&lt;n;i++)
+#define per(i,a,n) for (int i=n-1;i&gt;=a;i--)
+using namespace std;
+typedef pair&lt;int,int&gt; PII;
+typedef vector&lt;int&gt; VI;
+typedef long long LL;
+typedef unsigned long long ULL;
+typedef double DB;
+mt19937 randint(random_device{}());
+mt19937_64 randLL(random_device{}());
+template&lt;typename T=int&gt; 
+T gcd(T a,T b){return b?gcd(b,a%b):a;}
+template&lt;typename T=int&gt; 
+T qmi(T a,T b,T p){T res=1;while(b){if(b&amp;1)res=(LL)res*a%p;b&gt;&gt;=1;a=(LL)a*a%p;}return res%p;}
+template&lt;typename T=int&gt;
+T read(){
+	T x=0,f=1;
+	char ch=getchar();
+	while(ch&lt;'0'||ch&gt;'9'){
+		if(ch=='-')
+			f=-1;
+		ch=getchar();
+	}
+	while(ch&gt;='0'&amp;&amp;ch&lt;='9'){
+		x=x*10+ch-'0';
+		ch=getchar();
+	}
+	return x*f;
+}
+//----------------------------------------head------------------------------------
+const int INF=0x3f3f3f3f,mod=1e9+7,N=1e5+10;
+const double eps=1e-6;
+unordered_map&lt;int,int&gt; cast;
+int n,m;
+LL res,ans[N];
+int u[N],d[N];
+int s[N];
+int sa[N],x[N],y[N],c[N],rk[N],height[N];//sa[i]是i排名对应的编号,rk[i]是编号对应排名,height[i]是排名为i的与i-1的lcp,x[i]是编号对应排名,y[i]是排名对应编号
+void get_sa(){
+	for(int i=1;i&lt;=n;i++) c[x[i]=s[i]]++;
+	for(int i=2;i&lt;=m;i++) c[i]+=c[i-1];
+	for(int i=n;i;i--) sa[c[x[i]]--]=i;
+	for(int k=1;k&lt;=n;k&lt;&lt;=1){
+		int num=0;
+		for(int i=n-k+1;i&lt;=n;i++) y[++num]=i;
+		for(int i=1;i&lt;=n;i++)
+			if(sa[i]&gt;k)
+				y[++num]=sa[i]-k;
+		for(int i=1;i&lt;=m;i++) c[i]=0;
+		for(int i=1;i&lt;=n;i++) c[x[i]]++;
+		for(int i=2;i&lt;=m;i++) c[i]+=c[i-1];
+		for(int i=n;i;i--) sa[c[x[y[i]]]--]=y[i],y[i]=0;
+		swap(x,y);
+		x[sa[1]]=1,num=1;
+		for(int i=2;i&lt;=n;i++)
+			x[sa[i]]=(y[sa[i]]==y[sa[i-1]]&amp;&amp;sa[i]+k&lt;=n&amp;&amp;sa[i-1]+k&lt;=n&amp;&amp;y[sa[i]+k]==y[sa[i-1]+k])?num:++num;
+		if(num==n) break;
+		m=num;
+	}
+}
+void get_height(){
+	for(int i=1;i&lt;=n;i++) rk[sa[i]]=i;
+	for(int i=1,k=0;i&lt;=n;i++){
+		if(rk[i]==1) continue;
+		if(k) k--;
+		int j=sa[rk[i]-1];
+		while(i+k&lt;=n&amp;&amp;j+k&lt;=n&amp;&amp;s[i+k]==s[j+k]) k++;
+		height[rk[i]]=k;
+	}
+}
+int get(int x){
+	if(cast.count(x)) return cast[x];
+	return cast[x]=++m;
+}
+void solve(){
+	n=read();
+	for(int i=n;i;i--) s[i]=read(),s[i]=get(s[i]);
+	for(int i=1;i&lt;=n;i++) u[i]=i-1,d[i]=i+1;//这里维护的是排名的双链表，从上往下维护，u[i]表示i上面的那个串的排名，d[i]表示i下面的那个串的排名
+	get_sa();
+	get_height();
+	u[n+1]=n,d[0]=1;
+	for(int i=1;i&lt;=n;i++)
+		res+=n-sa[i]+1-height[i];
+	for(int i=1;i&lt;=n;i++){//删除编号为i的
+		int k=rk[i],j=d[k];//找到该编号对应的排名以及它的后一名
+		ans[i]=res;
+        //先减去它有贡献的地方
+		res-=n-sa[k]+1-height[k];
+		res-=n-sa[j]+1-height[j];
+		height[j]=min(height[j],height[k]);//lcp(i,j)=min(lcp(i,k),lcp(k,j))(i&lt;=k&lt;=j)
+		d[u[k]]=j,u[j]=u[k];//删除这一名
+		res+=n-sa[j]+1-height[j];//加上新的
+	}
+	for(int i=n;i;i--) cout&lt;&lt;ans[i]&lt;&lt;endl;//倒着输出
+}
+signed main(){
+	int t=1;
+	while(t--) solve();
+	return 0;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 
                 
             </div>
@@ -481,7 +831,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://verynewabie.github.io/2022/06/20/zi-fu-chuan-ha-xi/">http://verynewabie.github.io/2022/06/20/zi-fu-chuan-ha-xi/</a>
+                    <a href="http://verynewabie.github.io/2022/07/27/hou-zhui-shu-zu/">http://verynewabie.github.io/2022/07/27/hou-zhui-shu-zu/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -519,8 +869,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%93%88%E5%B8%8C/">
-                                    <span class="chip bg-color">字符串哈希</span>
+                                <a href="/tags/%E5%90%8E%E7%BC%80%E6%95%B0%E7%BB%84/">
+                                    <span class="chip bg-color">后缀数组</span>
                                 </a>
                             
                         </div>
@@ -831,6 +1181,43 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
+                <a href="/2022/07/27/hou-zhui-zi-dong-ji/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="后缀自动机">
+                        
+                        <span class="card-title">后缀自动机</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-07-27
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            nihility
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
                 <a href="/2022/06/21/xian-duan-shu/">
                     <div class="card-image">
                         
@@ -847,9 +1234,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-06-21
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-06-21
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -867,55 +1254,6 @@
                     
                     <a href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/">
                         <span class="chip bg-color">线段树</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2022/06/19/bing-cha-ji/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="并查集">
-                        
-                        <span class="card-title">并查集</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-06-19
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-category">
-                                    数据结构
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/">
-                        <span class="chip bg-color">并查集</span>
                     </a>
                     
                 </div>
