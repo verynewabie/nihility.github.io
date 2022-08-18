@@ -404,7 +404,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-07-28
+                    2022-08-17
                 </div>
                 
 
@@ -439,12 +439,12 @@
                 <blockquote>
 <p>后缀自动机，又称为SAM，是个有限状态自动机，我们可以把它看作一张有向拓扑图。由一个起点、若干终点组成。原串的所有子串和从SAM起点开始的所有路径一一对应，不重不漏。所有到达终点的路径就是原串的一个后缀。其中，每个点包含若干子串，每个子串都一一对应一条从起点到该点的路径，这些子串都是最长子串的连续后缀，而连续是什么意思呢，比如说你这个子串是aabbc，则aabbc、abbc、bbc、bc就是连续后缀，可以理解为长度连续的后缀。后缀自动机中包含两种边，一种是普通边，表示在某个状态所表示的所有子串的后面添加一个字符；另一种是Link边，表示将某个状态所表示的最短子串的首字母删除，这类边构成一棵树。值得一提的是，后缀自动机中点和边的数量都是$O(n)$的，点数$\le 2n$，边数$\le 3n$，且构造的时间复杂度是$O(n)$的</p>
 </blockquote>
-<h2 id="SAM的构造思路"><a href="#SAM的构造思路" class="headerlink" title="SAM的构造思路"></a>SAM的构造思路</h2><p>我们定义$endpos(s)$代表子串$s$所有出现位置(尾字母位置)的集合，$SAM$中的每个状态都代表一个$endpos$的等价类。</p>
-<p>假设$s=aabbabd$，我们易知$E(ab)=(3、6)$，$E$是$endpos$的简写，$E(abb)=E(aabb)=4$，这两个串就属于同一个状态，整个串的后缀自动机如图(蓝色的是普通边，绿色的是Link边)。</p>
+<h2 id="SAM的构造思路"><a href="#SAM的构造思路" class="headerlink" title="SAM的构造思路"></a>SAM的构造思路</h2><p>我们定义$endpos(s)$代表子串$s$所有出现位置（尾字母位置）的集合，$SAM$中的每个状态都代表一个$endpos$的等价类。</p>
+<p>假设$s=aabbabd$，我们易知$E(ab)=(3、6)$，$E$是$endpos$的简写，$E(abb)=E(aabb)=4$，这两个串就属于同一个状态，整个串的后缀自动机如图，蓝色的是普通边，绿色的是Link边。</p>
 <p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202207272012511.png" alt="image-20220727201201456"></p>
 <p>$endpos$有很多$useful$的性质</p>
 <ol>
-<li>令 $s1、s2$ 为 $S $的两个子串 ，不妨设 $|s1|≤|s2| $(我们用 $|s| $表示$ s $的长度)。则$ s1 $是$ s2$的后缀当且仅当 $endpos(s1)\supseteq endpos(s2) $，$s1$不是$ s2$ 的后缀当且仅当$ endpos(s1)\cap endpos(s2)=\emptyset$</li>
+<li>令 $s1、s2$ 为 $S $的两个子串 ，不妨设 $|s1|≤|s2| $，我们用 $|s| $表示$ s $的长度。则$ s1 $是$ s2$的后缀当且仅当 $endpos(s1)\supseteq endpos(s2) $，$s1$不是$ s2$ 的后缀当且仅当$ endpos(s1)\cap endpos(s2)=\emptyset$</li>
 <li>两个不同子串的$endpos$，要么有包含关系，要么没有交集。</li>
 <li>两个子串的$endpos$相同，那么短串为长串的后缀。</li>
 <li>对于一个状态$ st $，以及任意的$ longest(st) $的后缀$ s $，如果$ s $的长度满足：$|shortest(st)|≤|s|≤|longsest(st)|$，那么$ s∈substrings(st)$</li>
@@ -457,7 +457,7 @@
 <li>所有绿边构成一棵树</li>
 <li>一个状态的$endpos$集合一定包含它入点(通过一条绿边连向它的点)的$endpos$集合，因为该状态只要给串前面加一个字符就能到这些入点状态，特殊地，该状态如果包含原串的前缀串，则$endpos$集合会多一个。而每个状态里最多只有一个前缀。</li>
 </ol>
-<p>这些性质都比较容易证明，这里就不赘述了(多用例子代入、并使用反证法)</p>
+<p>这些性质都比较容易证明，这里就不赘述了（多用例子代入、并使用反证法）。</p>
 <p><strong>Talk is cheap，show me the code.</strong></p>
 <h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> tot<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span>last<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span><span class="token comment">//tot是总点数,last是上一个插入的点,空节点编号为1</span>
 <span class="token keyword">struct</span> <span class="token class-name">Node</span><span class="token punctuation">{</span><span class="token comment">//每个节点</span>
@@ -512,7 +512,7 @@ LL <span class="token function">dfs</span><span class="token punctuation">(</spa
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="公共串"><a href="#公共串" class="headerlink" title="公共串"></a>公共串</h2><p>$POI2020$：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5546">公共串</a></p>
-<p>这个题和我们求两个串的最长公共子串差不多，我们只需对第一个串建立后缀自动机，然后用后面的串在该后缀自动机上跑，记录后缀自动机每一个状态对应的答案，每个状态的最终答案就是每个字符串(除建立后缀自动机的串)对应该状态答案的最小值，最终答案就是所有状态最终答案的最大值。另外，我们每个串跑完后缀自动机后，我们需要把每个状态的答案传到它的父节点(因为我们在跑后缀自动机的时候可能不会对其父亲状态的答案进行更新，而其父亲是该状态的后缀，肯定需要更新)，否则就会出错(例如如下样例)。</p>
+<p>这个题和我们求两个串的最长公共子串差不多，我们只需对第一个串建立后缀自动机，然后用后面的串在该后缀自动机上跑，记录后缀自动机每一个状态对应的答案，每个状态的最终答案就是每个字符串（除建立后缀自动机的串）对应该状态答案的最小值，最终答案就是所有状态最终答案的最大值。另外，我们每个串跑完后缀自动机后，我们需要把每个状态的答案传到它的父节点（因为我们在跑后缀自动机的时候可能不会对其父亲状态的答案进行更新，而其父亲是该状态的后缀，肯定需要更新），否则就会出错（例如如下样例）。</p>
 <p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202207281000548.png" alt="image-20220728100001432"></p>
 <pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;bits/stdc++.h&gt;</span></span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">x</span> <span class="token expression">first </span></span>
