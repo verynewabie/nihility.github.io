@@ -404,7 +404,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-07-28
+                    2022-08-24
                 </div>
                 
 
@@ -449,7 +449,7 @@
 <p>$height：0，1，2，0，1，1$</p>
 <h2 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h2><p>我们先按照每个后缀的第一个字符对所有后缀排序，第一个字符相同的后缀之间的相对顺序不变，我们使用基数排序，一次基数排序的时间复杂度是$O(n)$，然后倍增地进行，时间复杂度$O(n log n)$。</p>
 <p>当所有后缀按前$k$个字符排好序后，我们考虑按前$2k$个字符来排序，前$k$个字符为第一关键字，$k+1\sim 2k$个字符为第二关键字，先按第二关键字排序，再按第一关键字排序，其中使用离散化。</p>
-<p>然后对于求$height[i]$，设$h[i]$表示$height[rk[i]]$，即排名为i的后缀与排名在它前一个的后缀的最长公共前缀，而$h[i]\ge h[i-1]-1$，我们可以$O(n)$的求出$height$数组，时间复杂度分析类似于$KMP$算法，采用的是势能分析法。</p>
+<p>然后对于求$height[i]$，设$h[i]$表示$height[rk[i]]$，即编号为i的后缀与排名在它前一个的后缀的最长公共前缀，而$h[i]\ge h[i-1]-1$，我们可以$O(n)$的求出$height$数组，时间复杂度分析类似于$KMP$算法，采用的是势能分析法。</p>
 <p>关于$h[i]\ge h[i-1]-1$的证明：</p>
 <p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202207262218712.png" alt="image-20220726221845492"></p>
 <p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202207262219171.png" alt="image-20220726221910009"></p>
@@ -492,7 +492,7 @@
         <span class="token comment">//排名为1的对应编号的排名为1</span>
         x<span class="token punctuation">[</span>sa<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span> num <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
         <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> n<span class="token punctuation">;</span> i <span class="token operator">++</span> <span class="token punctuation">)</span>
-            <span class="token comment">//看看是否有相同的,第一关键字和第二关键字都要比较,另外,这里本人实测数组不会越界,是真的牛批</span>
+            <span class="token comment">//看看是否有相同的,第一关键字和第二关键字都要比较</span>
             x<span class="token punctuation">[</span>sa<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span>y<span class="token punctuation">[</span>sa<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">==</span> y<span class="token punctuation">[</span>sa<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span> y<span class="token punctuation">[</span>sa<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> k<span class="token punctuation">]</span> <span class="token operator">==</span> y<span class="token punctuation">[</span>sa<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+</span> k<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">?</span> num <span class="token operator">:</span> <span class="token operator">++</span> num<span class="token punctuation">;</span>
         <span class="token keyword">if</span> <span class="token punctuation">(</span>num <span class="token operator">==</span> n<span class="token punctuation">)</span> <span class="token keyword">break</span><span class="token punctuation">;</span><span class="token comment">//已经排完了</span>
         m <span class="token operator">=</span> num<span class="token punctuation">;</span><span class="token comment">//修改下离散的范围</span>
@@ -516,7 +516,7 @@
     <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="求不同子串个数"><a href="#求不同子串个数" class="headerlink" title="求不同子串个数"></a>求不同子串个数</h2><p>给定一个字符串，有了$height$数组，我们就很容易求出不同子串个数(即字典序不同)，我们已经按字典序给所有的后缀排好序，不同子串个数就相当于所有后缀的不同前缀个数。我们按字典序从前往后遍历所有后缀。</p>
+<h2 id="求不同子串个数"><a href="#求不同子串个数" class="headerlink" title="求不同子串个数"></a>求不同子串个数</h2><p>给定一个字符串，有了$height$数组，我们就很容易求出不同子串个数（即字典序不同），我们已经按字典序给所有的后缀排好序，不同子串个数就相当于所有后缀的不同前缀个数。我们按字典序从前往后遍历所有后缀。</p>
 <p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202207271423852.png" alt="image-20220727142323709"></p>
 <p>很明显，第一个后缀的所有前缀都应该被我们统计进答案，而第二个后缀的前缀恰有$height[i]$个是与前面的重复的，这样我们扫一遍$height$数组即可得到本质不同子串个数了。有同学可能会问，你这样统计到排名为i的后缀时，有没有可能与前面的后缀有一些公共前缀没减去？答案是：<strong>不会</strong>！</p>
 <p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202207271429499.png" alt="image-20220727142927454"></p>
