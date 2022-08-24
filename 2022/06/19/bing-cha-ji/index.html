@@ -404,7 +404,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-06-19
+                    2022-08-24
                 </div>
                 
 
@@ -491,7 +491,7 @@ p<span class="token punctuation">[</span>pa2<span class="token punctuation">]</s
 <span class="token comment">//奇数的情况也差不多，就不多写了</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>另外这题也能用带权并查集来写，我们维护的权值只有1和0，两点之间距离为0时说明奇偶性相同，为1时说明奇偶性不同，然后计算距离时对2取模即可。</p>
-<p>最后留一道不错的练习题：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2024">食物链</a>(带权并查集和扩展域并查集都能写)</p>
+<p>最后留一道不错的练习题：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2024">食物链</a>（带权并查集和扩展域并查集都能写）</p>
 <h2 id="可撤销并查集"><a href="#可撤销并查集" class="headerlink" title="可撤销并查集"></a>可撤销并查集</h2><p>顾名思义，可撤销并查集就是能撤销我们的合并操作的并查集，要撤销，我们就需要存储每一次修改的信息，然后就行回退，这时再使用路径压缩就会出现问题，如图。</p>
 <p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202206191353327.png" alt="image-20220619135318193"></p>
 <p>因此我们使用按秩合并，此时每次find的时间复杂度为$O(log n)$，那我们怎么撤销呢？我们发现，我们每次合并只会改变一个集合的大小和一个点的父亲，我们把这些都记录下来，就能撤销了。</p>
