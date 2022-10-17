@@ -404,7 +404,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-08-24
+                    2022-10-17
                 </div>
                 
 
@@ -449,7 +449,7 @@
 <p>$height：0，1，2，0，1，1$</p>
 <h2 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h2><p>我们先按照每个后缀的第一个字符对所有后缀排序，第一个字符相同的后缀之间的相对顺序不变，我们使用基数排序，一次基数排序的时间复杂度是$O(n)$，然后倍增地进行，时间复杂度$O(n log n)$。</p>
 <p>当所有后缀按前$k$个字符排好序后，我们考虑按前$2k$个字符来排序，前$k$个字符为第一关键字，$k+1\sim 2k$个字符为第二关键字，先按第二关键字排序，再按第一关键字排序，其中使用离散化。</p>
-<p>然后对于求$height[i]$，设$h[i]$表示$height[rk[i]]$，即编号为i的后缀与排名在它前一个的后缀的最长公共前缀，而$h[i]\ge h[i-1]-1$，我们可以$O(n)$的求出$height$数组，时间复杂度分析类似于$KMP$算法，采用的是势能分析法。</p>
+<p>然后对于求$height[i]$，设$h[i]$表示$height[rk[i]]$，即编号为$i$的后缀与排名在它前一个的后缀的最长公共前缀，而$h[i]\ge h[i-1]-1$，我们可以$O(n)$的求出$height$数组，时间复杂度分析类似于$KMP$算法，采用的是势能分析法。</p>
 <p>关于$h[i]\ge h[i-1]-1$的证明：</p>
 <p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202207262218712.png" alt="image-20220726221845492"></p>
 <p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/boke/202207262219171.png" alt="image-20220726221910009"></p>
@@ -543,7 +543,7 @@ n<span class="token operator">=</span><span class="token function">strlen</span>
 
 <h2 id="后缀排序"><a href="#后缀排序" class="headerlink" title="后缀排序"></a>后缀排序</h2><p>板子题：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3809">后缀排序</a></p>
 <h2 id="品酒大会"><a href="#品酒大会" class="headerlink" title="品酒大会"></a>品酒大会</h2><p>$NOI2015$：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2178">品酒大会</a></p>
-<p>两杯酒$l、r$是$k$相似的，等价于$lcp(i，j)\ge k$，当我们求两杯$k$相似的酒相调的方案数时，我们可以考虑该字符串所有后缀按字典序排序的序列，我们发现可以相调的酒被分成了若干段。(因为我们有性质:$lcp(i,j)=min(lcp(i,k),lcp(k,j))(i\le k \le j)$)，我们只需要知道这些段的大小$sz$，方案数就是$sz\times (sz-1)\div 2$，然后我们考虑倒着来求，因为这样的话刚开始所有酒都是单独一段，我们后面只需不断合并，这样比正着分裂好做得多(我还不知道正着能不能做)，合并的同时维护每一段的最大值、次大值、最小值、次小值用来求可以得到的最大美味度。</p>
+<p>两杯酒$l、r$是$k$相似的，等价于$lcp(i，j)\ge k$，当我们求两杯$k$相似的酒相调的方案数时，我们可以考虑该字符串所有后缀按字典序排序的序列，我们发现可以相调的酒被分成了若干段。(因为我们有性质:$lcp(i,j)=min(lcp(i,k),lcp(k,j))(i\le k \le j)$），我们只需要知道这些段的大小$sz$，方案数就是$sz\times (sz-1)\div 2$，然后我们考虑倒着来求，因为这样的话刚开始所有酒都是单独一段，我们后面只需不断合并，这样比正着分裂好做得多（我还不知道正着能不能做），合并的同时维护每一段的最大值、次大值、最小值、次小值用来求可以得到的最大美味度。</p>
 <pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;bits/stdc++.h&gt;</span></span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">x</span> <span class="token expression">first </span></span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">y</span> <span class="token expression">second</span></span>
@@ -1167,8 +1167,8 @@ LL res<span class="token punctuation">,</span>ans<span class="token punctuation"
 <script>
     new Valine({
         el: '#vcomments',
-        appId: 'VozLBz0GSBHVYKPmvsaM2O4M-9Nh9j0Va',
-        appKey: 'g5rFune16N8iDHqhWN6AqY36',
+        appId: 'flYIZLjBrlv02UsezvFrhWTl-9Nh9j0Va',
+        appKey: 'MZOeueloamcgnGryVEMCFIFP',
         notify: 'false' === 'true',
         verify: 'false' === 'true',
         visitor: 'true' === 'true',
