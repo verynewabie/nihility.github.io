@@ -1,0 +1,1753 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="keywords" content="Go语言调试及性能分析, nihility">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Go语言调试及性能分析 | nihility</title>
+    <link rel="icon" type="image/png" href="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/erciyuan/202204300004888.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 6.2.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/erciyuan/202204300004888.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">nihility</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/erciyuan/202204300004888.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">nihility</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Go语言调试及性能分析</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Go%E8%AF%AD%E8%A8%80/">
+                                <span class="chip bg-color">深入理解Go语言</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Golang/" class="post-category">
+                                Golang
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-08-10
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2023-08-12
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.5k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    11 分
+                </div>
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <blockquote>
+<p>写程序的时候经常需要我们分析程序运行的性能、debug，本篇文章将通过几个场景介绍几个相关工具的简单使用。</p>
+</blockquote>
+<h2 id="分析程序的运行时间和CPU利用率"><a href="#分析程序的运行时间和CPU利用率" class="headerlink" title="分析程序的运行时间和CPU利用率"></a>分析程序的运行时间和CPU利用率</h2><h3 id="shell内置的time指令"><a href="#shell内置的time指令" class="headerlink" title="shell内置的time指令"></a>shell内置的time指令</h3><p>假如我们有一个go程序：</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token string">"fmt"</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"Hello world"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>我们通过<code>time go run main.go</code>即可获取程序运行时间的相关信息：</p>
+<p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/2023/08/9aba9355bedeafc7366813e680aafdda.png" alt="image-20230811102705973"></p>
+<ul>
+<li><code>real</code>：程序开始到结束经过的时间</li>
+<li><code>user</code>：程序在用户态度过的时间</li>
+<li><code>sys</code>：程序在内核态度过的时间</li>
+</ul>
+<p>一般情况下，$real\ge user+sys$，因为操作系统中还有其它进程，进程切换时会有空白期。</p>
+<h3 id="x2F-usr-x2F-bin-x2F-time指令"><a href="#x2F-usr-x2F-bin-x2F-time指令" class="headerlink" title="/usr/bin/time指令"></a>/usr/bin/time指令</h3><p>这个指令比内置的<code>time</code>获得的信息更详细，使用时需要带上<code>-v</code>参数，使用<code>/usr/bin/time -v go run main.go  </code>，获取信息如下：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Command being timed: <span class="token string">"go run main.go"</span>
+User <span class="token function">time</span> <span class="token punctuation">(</span>seconds<span class="token punctuation">)</span>: <span class="token number">0.18</span>
+System <span class="token function">time</span> <span class="token punctuation">(</span>seconds<span class="token punctuation">)</span>: <span class="token number">0.03</span>
+Percent of CPU this job got: <span class="token number">117</span>% <span class="token comment"># CPU占用率</span>
+Elapsed <span class="token punctuation">(</span>wall clock<span class="token punctuation">)</span> <span class="token function">time</span> <span class="token punctuation">(</span>h:mm:ss or m:ss<span class="token punctuation">)</span>: <span class="token number">0</span>:00.18 <span class="token comment"># 程序开始到结束系统时钟走过的时间</span>
+Average shared text size <span class="token punctuation">(</span>kbytes<span class="token punctuation">)</span>: <span class="token number">0</span>
+Average unshared data size <span class="token punctuation">(</span>kbytes<span class="token punctuation">)</span>: <span class="token number">0</span>
+Average stack size <span class="token punctuation">(</span>kbytes<span class="token punctuation">)</span>: <span class="token number">0</span>
+Average total size <span class="token punctuation">(</span>kbytes<span class="token punctuation">)</span>: <span class="token number">0</span>
+Maximum resident <span class="token builtin class-name">set</span> size <span class="token punctuation">(</span>kbytes<span class="token punctuation">)</span>: <span class="token number">41596</span> <span class="token comment"># 执行程序所占用内存的最大值</span>
+Average resident <span class="token builtin class-name">set</span> size <span class="token punctuation">(</span>kbytes<span class="token punctuation">)</span>: <span class="token number">0</span>
+<span class="token comment"># page fault情况</span>
+Major <span class="token punctuation">(</span>requiring I/O<span class="token punctuation">)</span> page faults: <span class="token number">288</span>
+Minor <span class="token punctuation">(</span>reclaiming a frame<span class="token punctuation">)</span> page faults: <span class="token number">12644</span>
+<span class="token comment"># 进程切换情况</span>
+Voluntary context switches: <span class="token number">885</span>
+Involuntary context switches: <span class="token number">58</span>
+Swaps: <span class="token number">0</span>
+<span class="token comment"># 文件系统IO</span>
+File system inputs: <span class="token number">1216</span>
+File system outputs: <span class="token number">2312</span>
+<span class="token comment"># socket使用情况</span>
+Socket messages sent: <span class="token number">0</span>
+Socket messages received: <span class="token number">0</span>
+Signals delivered: <span class="token number">0</span>
+Page size <span class="token punctuation">(</span>bytes<span class="token punctuation">)</span>: <span class="token number">4096</span>
+Exit status: <span class="token number">0</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="分许程序的内存使用情况"><a href="#分许程序的内存使用情况" class="headerlink" title="分许程序的内存使用情况"></a>分许程序的内存使用情况</h2><h3 id="内存占用情况的查看"><a href="#内存占用情况的查看" class="headerlink" title="内存占用情况的查看"></a>内存占用情况的查看</h3><p>给出以下实例代码：</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">"log"</span>
+    <span class="token string">"runtime"</span>
+    <span class="token string">"time"</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">//slice 会动态扩容，用slice来做堆内存申请</span>
+    container <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span>
+
+    log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">" ===&gt; loop begin."</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">32</span><span class="token operator">*</span><span class="token number">1000</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+        container <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>container<span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">" ===&gt; loop end."</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"Start."</span><span class="token punctuation">)</span>
+
+    <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"force gc."</span><span class="token punctuation">)</span>
+    runtime<span class="token punctuation">.</span><span class="token function">GC</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">//强制调用gc回收</span>
+
+    log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"Done."</span><span class="token punctuation">)</span>
+
+    time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">3600</span> <span class="token operator">*</span> time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span> <span class="token comment">//睡眠，保持程序不退出</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>通过<code>go build memory.go</code> 生成可执行程序，并<code>./memory</code>运行。</p>
+<p>然后再开一个窗口通过<code>top -p $(pidof memory)</code>查看该进程的内存占用等情况：</p>
+<p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/2023/08/bed09b7598eced004d6aee39f25374f2.png" alt="image-20230812095631830"></p>
+<p>我们发现该进程占用了900多兆内存，奇怪，我们已经调用了GC，按理说内存应该都回收了，让我们通过调试查看详细的情况。</p>
+<h3 id="GODEBUG与gctrace"><a href="#GODEBUG与gctrace" class="headerlink" title="GODEBUG与gctrace"></a>GODEBUG与gctrace</h3><p>设置环境变量并执行：<code>GODEBUG='gctrace=1' ./memory</code>，这会使得垃圾回收器在每次回收时汇总所回收内存的大小以及耗时并打印到<code>stderr</code>中。</p>
+<p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/2023/08/ba2bac86cbf5267caa176b3f3a4c9233.png" alt="image-20230812100140151"></p>
+<p>输出了这类内容，格式：<code>gc # @#s #%: #+#+# ms clock, #+#/#/#+# ms cpu, #-&gt;#-&gt;# MB, # MB goal, # P</code></p>
+<blockquote>
+<p>gc #        GC次数的编号，每次GC时递增<br>@#s         距离程序开始执行时的时间<br>#%          GC占用的执行时间百分比<br>#+…+#     GC使用的时间<br>#-&gt;#-&gt;# MB  GC开始，结束，以及当前活跃堆内存的大小，单位M<br># MB goal   全局堆内存大小<br># P         使用processor的数量</p>
+</blockquote>
+<p>如果一条信息最后，以<code>(forced)</code>结尾，那么该信息是由<code>runtime.GC()</code>调用触发</p>
+<p>我们挑一行来解释：<code>gc 18 @0.175s 5%: 0.021+42+0.010 ms clock, 0.086+0/0.11/42+0.041 ms cpu, 346-&gt;346-&gt;211 MB, 346 MB goal, 0 MB stacks, 0 MB globals, 4 P</code></p>
+<ul>
+<li><code>gc 18</code>: Gc 调试编号为18</li>
+<li><code>@0.175s</code>:此时程序已经执行了0.175s</li>
+<li><code>5%</code>: 0.175s中其中gc模块占用了5%的时间</li>
+<li><code>0.021+42+0.010 ms clock</code>: 垃圾回收的时间，分别为STW清扫的时间+并发标记和扫描的时间+STW标记的时间</li>
+<li><code>0.086+0/0.11/42+0.041 ms cpu</code>: 垃圾回收占用cpu时间</li>
+<li><code>346-&gt;346-&gt;211 MB</code>： GC开始前堆内存346， GC结束后堆内存346，当前活跃的堆内存211M</li>
+<li><code>346 MB goal</code>: 全局堆内存大小</li>
+<li><code>4 P</code>: 本次GC使用了2个P(调度器中的Processer)</li>
+<li>GC forced: 如果两分钟内没有执行GC，会强制执行一次GC，会换行打印 GC forced</li>
+</ul>
+<p>那为什么GC没有回收变量呢？我们查看相关输出：</p>
+<p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/2023/08/873328a13549f5a6f375bbfee264fd97.png" alt="image-20230812101110333"></p>
+<p>我们发现，我们手动调用的那次GC就已经把516M的堆内存标记为非活跃内存，再看下一条记录，全局堆内存已经下降到了4M，说明：</p>
+<ul>
+<li>在<code>test()</code>函数执行完后，程序中的切片容器所申请的堆空间都被垃圾回收器回收了</li>
+<li><strong>垃圾回收器回收了应用层的内存后，（可能）并不会立即将内存归还给系统。</strong></li>
+</ul>
+<h3 id="runtime-ReadMemStats"><a href="#runtime-ReadMemStats" class="headerlink" title="runtime.ReadMemStats"></a>runtime.ReadMemStats</h3><p>这是一个Go语言库提供的方法，我们用以下示例程序：</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">"log"</span>
+    <span class="token string">"runtime"</span>
+    <span class="token string">"time"</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">readMemStats</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// 读取内存信息,log打印</span>
+
+    <span class="token keyword">var</span> ms runtime<span class="token punctuation">.</span>MemStats
+
+    runtime<span class="token punctuation">.</span><span class="token function">ReadMemStats</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>ms<span class="token punctuation">)</span>
+
+    log<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">" ===&gt; Alloc:%d(bytes) HeapIdle:%d(bytes) HeapReleased:%d(bytes)"</span><span class="token punctuation">,</span> ms<span class="token punctuation">.</span>Alloc<span class="token punctuation">,</span> ms<span class="token punctuation">.</span>HeapIdle<span class="token punctuation">,</span> ms<span class="token punctuation">.</span>HeapReleased<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">//slice 会动态扩容，用slice来做堆内存申请</span>
+    container <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span>
+
+    log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">" ===&gt; loop begin."</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">32</span><span class="token operator">*</span><span class="token number">1000</span><span class="token operator">*</span><span class="token number">1000</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+        container <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>container<span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span> i <span class="token operator">==</span> <span class="token number">16</span><span class="token operator">*</span><span class="token number">1000</span><span class="token operator">*</span><span class="token number">1000</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">readMemStats</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">" ===&gt; loop end."</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">" ===&gt; [Start]."</span><span class="token punctuation">)</span>
+
+    <span class="token function">readMemStats</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">readMemStats</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">" ===&gt; [force gc]."</span><span class="token punctuation">)</span>
+    runtime<span class="token punctuation">.</span><span class="token function">GC</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">//强制调用gc回收</span>
+
+    log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">" ===&gt; [Done]."</span><span class="token punctuation">)</span>
+    <span class="token function">readMemStats</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">go</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">{</span>
+            <span class="token function">readMemStats</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">10</span> <span class="token operator">*</span> time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">3600</span> <span class="token operator">*</span> time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span> <span class="token comment">//睡眠，保持程序不退出</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>生成可执行程序并运行，观察输出：</p>
+<p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/2023/08/89786572e354596a7cf2360977344a3d.png" alt="image-20230812102229630"></p>
+<p>在打印<code>[Done]</code>之后，<code>Alloc</code>开始下降，说明内存已被GC回收，随后<code>HeapReleased</code>又开始上升，说明此时GC开始把内存归还给操作系统。</p>
+<h3 id="pprof工具"><a href="#pprof工具" class="headerlink" title="pprof工具"></a>pprof工具</h3><p>这是一个支持在网页上查看内存使用情况的工具，使用示例如下：</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">"log"</span>
+    <span class="token string">"runtime"</span>
+    <span class="token string">"time"</span>
+    <span class="token string">"net/http"</span>
+    <span class="token boolean">_</span> <span class="token string">"net/http/pprof"</span>
+    <span class="token comment">// 由于我们没有在程序中直接调用pprof,因此前面加上_防止报错</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">readMemStats</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">var</span> ms runtime<span class="token punctuation">.</span>MemStats
+
+    runtime<span class="token punctuation">.</span><span class="token function">ReadMemStats</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>ms<span class="token punctuation">)</span>
+
+    log<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">" ===&gt; Alloc:%d(bytes) HeapIdle:%d(bytes) HeapReleased:%d(bytes)"</span><span class="token punctuation">,</span> ms<span class="token punctuation">.</span>Alloc<span class="token punctuation">,</span> ms<span class="token punctuation">.</span>HeapIdle<span class="token punctuation">,</span> ms<span class="token punctuation">.</span>HeapReleased<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">//slice 会动态扩容，用slice来做堆内存申请</span>
+    container <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span>
+
+    log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">" ===&gt; loop begin."</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">32</span><span class="token operator">*</span><span class="token number">1000</span><span class="token operator">*</span><span class="token number">1000</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+        container <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>container<span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span> i <span class="token operator">==</span> <span class="token number">16</span><span class="token operator">*</span><span class="token number">1000</span><span class="token operator">*</span><span class="token number">1000</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">readMemStats</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">" ===&gt; loop end."</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+
+    <span class="token comment">//启动pprof</span>
+    <span class="token keyword">go</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>http<span class="token punctuation">.</span><span class="token function">ListenAndServe</span><span class="token punctuation">(</span><span class="token string">"0.0.0.0:10000"</span><span class="token punctuation">,</span> <span class="token boolean">nil</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">" ===&gt; [Start]."</span><span class="token punctuation">)</span>
+
+    <span class="token function">readMemStats</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">readMemStats</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">" ===&gt; [force gc]."</span><span class="token punctuation">)</span>
+    runtime<span class="token punctuation">.</span><span class="token function">GC</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">//强制调用gc回收</span>
+
+    log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">" ===&gt; [Done]."</span><span class="token punctuation">)</span>
+    <span class="token function">readMemStats</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">go</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">{</span>
+            <span class="token function">readMemStats</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">10</span> <span class="token operator">*</span> time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">3600</span> <span class="token operator">*</span> time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span> <span class="token comment">//睡眠，保持程序不退出</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>我们正常运行程序，同时打开网址<code>http://127.0.0.1:10000/debug/pprof/heap?debug=1</code>，即可看到堆内存的相关情况。</p>
+<p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/2023/08/8beaee12923edffa014c29e0a9d1cf5f.png" alt="image-20230812103807353"></p>
+<h2 id="分析程序的CPU性能情况"><a href="#分析程序的CPU性能情况" class="headerlink" title="分析程序的CPU性能情况"></a>分析程序的CPU性能情况</h2><p>我们使用如下代码测试：</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">"bytes"</span>
+    <span class="token string">"math/rand"</span>
+    <span class="token string">"time"</span>
+    <span class="token string">"log"</span>
+    <span class="token string">"net/http"</span>
+    <span class="token boolean">_</span> <span class="token string">"net/http/pprof"</span>
+<span class="token punctuation">)</span>
+
+
+<span class="token keyword">func</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">" ===&gt; loop begin."</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">1000</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+        log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">genSomeBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    log<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">" ===&gt; loop end."</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">//生成一个随机字符串</span>
+<span class="token keyword">func</span> <span class="token function">genSomeBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span>bytes<span class="token punctuation">.</span>Buffer <span class="token punctuation">{</span>
+
+    <span class="token keyword">var</span> buff bytes<span class="token punctuation">.</span>Buffer
+
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">20000</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+        buff<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">{</span><span class="token char">'0'</span> <span class="token operator">+</span> <span class="token function">byte</span><span class="token punctuation">(</span>rand<span class="token punctuation">.</span><span class="token function">Intn</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> <span class="token operator">&amp;</span>buff
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">go</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">{</span>
+            <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>Second <span class="token operator">*</span> <span class="token number">1</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token comment">//启动pprof</span>
+    http<span class="token punctuation">.</span><span class="token function">ListenAndServe</span><span class="token punctuation">(</span><span class="token string">"0.0.0.0:10000"</span><span class="token punctuation">,</span> <span class="token boolean">nil</span><span class="token punctuation">)</span>
+
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>我们在程序中一直随机生成字符串，接下来我们通过几种方式查看进程的cpu性能情况。</p>
+<h3 id="Web界面查看"><a href="#Web界面查看" class="headerlink" title="Web界面查看"></a>Web界面查看</h3><p>运行程序，浏览器访问<code>http://127.0.0.1:10000/debug/pprof/</code>，我们会看到如下画面：</p>
+<p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/2023/08/f80cc483f9d4601cb5d604111ce2aa69.png" alt="image-20230812104247740"></p>
+<p>这里面能够通过pprof查看包括（阻塞信息、cpu信息、内存堆信息、锁信息、goroutine信息等等）， 我们这里关心cpu性能的<code>profile</code>信息。看英文，我们发现，他需要我们获取当前进程的<code>profile</code>文件，默认是30s生成一个，我们可以修改（后面介绍）。我们可以直接点击网页的<code>profile</code>，浏览器会给我们下载一个<code>profile</code>文件。记住这个文件的路径，拷贝到当前目录下。</p>
+<h3 id="使用pprof工具查看"><a href="#使用pprof工具查看" class="headerlink" title="使用pprof工具查看"></a>使用pprof工具查看</h3><p>指令格式：<code>go tool pprof [binary] [profile]</code>，其中<code>[binary]</code>即是我们的可执行程序，而<code>[profile]</code>即是我们刚刚下载的<code>profile</code>文件。<code>binary</code> <strong>和</strong> <code>profile</code> <strong>必须对应</strong>。</p>
+<p>执行<code>go tool pprof ./cpu profile</code>得到如下输出：</p>
+<p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/2023/08/689a7a5535b0b0950a83b0c989520dc9.png" alt="image-20230812105240694"></p>
+<p><code>help</code>可以查看指令，我们可以通过<code>top</code>指令获取cpu相关的信息：</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token punctuation">(</span>pprof<span class="token punctuation">)</span> top
+Showing nodes accounting <span class="token keyword">for</span> 5090ms<span class="token punctuation">,</span> <span class="token number">81.18</span><span class="token operator">%</span> of 6270ms total
+Dropped <span class="token number">80</span> nodes <span class="token punctuation">(</span>cum <span class="token operator">&lt;=</span> <span class="token number">31</span><span class="token punctuation">.</span>35ms<span class="token punctuation">)</span>
+Showing top <span class="token number">10</span> nodes out of <span class="token number">60</span>
+      flat  flat<span class="token operator">%</span>   sum<span class="token operator">%</span>        cum   cum<span class="token operator">%</span>
+    1060ms <span class="token number">16.91</span><span class="token operator">%</span> <span class="token number">16.91</span><span class="token operator">%</span>     2170ms <span class="token number">34.61</span><span class="token operator">%</span>  math<span class="token operator">/</span>rand<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token operator">*</span>lockedSource<span class="token punctuation">)</span><span class="token punctuation">.</span>Int63
+     850ms <span class="token number">13.56</span><span class="token operator">%</span> <span class="token number">30.46</span><span class="token operator">%</span>      850ms <span class="token number">13.56</span><span class="token operator">%</span>  sync<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token operator">*</span>Mutex<span class="token punctuation">)</span><span class="token punctuation">.</span>Unlock <span class="token punctuation">(</span>inline<span class="token punctuation">)</span>
+     710ms <span class="token number">11.32</span><span class="token operator">%</span> <span class="token number">41.79</span><span class="token operator">%</span>     2950ms <span class="token number">47.05</span><span class="token operator">%</span>  math<span class="token operator">/</span>rand<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token operator">*</span>Rand<span class="token punctuation">)</span><span class="token punctuation">.</span>Int31n
+     570ms  <span class="token number">9.09</span><span class="token operator">%</span> <span class="token number">50.88</span><span class="token operator">%</span>      990ms <span class="token number">15.79</span><span class="token operator">%</span>  bytes<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token operator">*</span>Buffer<span class="token punctuation">)</span><span class="token punctuation">.</span>Write
+     530ms  <span class="token number">8.45</span><span class="token operator">%</span> <span class="token number">59.33</span><span class="token operator">%</span>      540ms  <span class="token number">8.61</span><span class="token operator">%</span>  syscall<span class="token punctuation">.</span>Syscall
+     370ms  <span class="token number">5.90</span><span class="token operator">%</span> <span class="token number">65.23</span><span class="token operator">%</span>      370ms  <span class="token number">5.90</span><span class="token operator">%</span>  runtime<span class="token punctuation">.</span>procyield
+     270ms  <span class="token number">4.31</span><span class="token operator">%</span> <span class="token number">69.54</span><span class="token operator">%</span>     4490ms <span class="token number">71.61</span><span class="token operator">%</span>  main<span class="token punctuation">.</span>genSomeBytes
+     250ms  <span class="token number">3.99</span><span class="token operator">%</span> <span class="token number">73.52</span><span class="token operator">%</span>     3200ms <span class="token number">51.04</span><span class="token operator">%</span>  math<span class="token operator">/</span>rand<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token operator">*</span>Rand<span class="token punctuation">)</span><span class="token punctuation">.</span>Intn
+     250ms  <span class="token number">3.99</span><span class="token operator">%</span> <span class="token number">77.51</span><span class="token operator">%</span>      250ms  <span class="token number">3.99</span><span class="token operator">%</span>  runtime<span class="token punctuation">.</span>memmove
+     230ms  <span class="token number">3.67</span><span class="token operator">%</span> <span class="token number">81.18</span><span class="token operator">%</span>      690ms <span class="token number">11.00</span><span class="token operator">%</span>  runtime<span class="token punctuation">.</span>suspendG
+<span class="token punctuation">(</span>pprof<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>flat：当前函数占用CPU的耗时</li>
+<li>flat%：:当前函数占用CPU的耗时百分比</li>
+<li>sum%：函数占用CPU的耗时累计百分比</li>
+<li>cum：当前函数加上调用当前函数的函数占用CPU的总耗时</li>
+<li>cum%：当前函数加上调用当前函数的函数占用CPU的总耗时百分比</li>
+<li>最后一列：函数名称</li>
+</ul>
+<p>我们可以看出， 该程序的大部分cpu性能消耗在 <code>main.getSomeBytes()</code>方法中，其中<code>math/rand</code>取随机数消耗比较大。</p>
+<h3 id="通过go-tool-pprof得到profile文件"><a href="#通过go-tool-pprof得到profile文件" class="headerlink" title="通过go tool pprof得到profile文件"></a>通过go tool pprof得到profile文件</h3><p>我们上面的profile文件是通过web浏览器下载的，这个profile的时间是30s，我们在浏览器上修改不了，如果你想得到时间更长的cpu利用率，可以通过<code>go tool pprof</code>指令与程序交互来获取。</p>
+<p>我们先启动程序：<code>./cpu</code></p>
+<p>然后在同目录下再开一个终端：<code>go tool pprof http://localhost:10000/debug/pprof/profile?seconds=60</code></p>
+<p>等待60s之后，第二个终端就会有结果出来，我们继续使用top即可查看。</p>
+<h3 id="可视化查看"><a href="#可视化查看" class="headerlink" title="可视化查看"></a>可视化查看</h3><p>在<code>go tool pprof ./cpu profile</code>之后我们输入<code>web</code>指令，若报错找不到<code>graphviz</code>，就先安装。</p>
+<p>Ubuntu安装：<code>sudo apt-get install graphviz</code></p>
+<p>然后我们就会得到一个svg的可视化文件在<code>/tmp</code>路径下：</p>
+<p><img src="https://cartoonwqy.oss-cn-nanjing.aliyuncs.com/2023/08/ab9032df29b062de23771a95a7808e12.png" alt="image-20230812110116990"></p>
+<p>可以清楚地看到函数间调用关系，且方框越大，cpu占用越大。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">verynewabie</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://verynewabie.github.io/2023/08/10/go-yu-yan-diao-shi-ji-xing-neng-fen-xi/">http://verynewabie.github.io/2023/08/10/go-yu-yan-diao-shi-ji-xing-neng-fen-xi/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">verynewabie</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Go%E8%AF%AD%E8%A8%80/">
+                                    <span class="chip bg-color">深入理解Go语言</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'flYIZLjBrlv02UsezvFrhWTl-9Nh9j0Va',
+        appKey: 'MZOeueloamcgnGryVEMCFIFP',
+        notify: 'false' === 'true',
+        verify: 'false' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just go go'
+    });
+</script>
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2023/08/10/go-yu-yan-diao-shi-ji-xing-neng-fen-xi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="Go语言调试及性能分析">
+                        
+                        <span class="card-title">Go语言调试及性能分析</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-08-10
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Golang/" class="post-category">
+                                    Golang
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Go%E8%AF%AD%E8%A8%80/">
+                        <span class="chip bg-color">深入理解Go语言</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/08/08/go-yu-yan-gc-fen-xi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="Go语言GC分析">
+                        
+                        <span class="card-title">Go语言GC分析</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-08-08
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Golang/" class="post-category">
+                                    Golang
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Go%E8%AF%AD%E8%A8%80/">
+                        <span class="chip bg-color">深入理解Go语言</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: nihility<br />'
+            + '文章作者: nihility<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h1, h2, h3, h4, h5, h6'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4, h5, h6').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="3007009668"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2023</span>
+            
+            <span id="year">2022</span>
+            <a href="/about" target="_blank">nihility</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">26.7k</span>&nbsp;字
+            
+            
+            
+            
+            
+            <br>
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2022";
+                    var startMonth = "6";
+                    var startDate = "18";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link ">
+    <a href="https://github.com/verynewabie" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1159046908@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1159046908" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1159046908" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?92e2c60f31edf515caa39b385820f05b";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+    <!--趣味标题-->
+    <script type="text/javascript">
+        var OriginTitile=document.title,st;
+        document.addEventListener("visibilitychange",function(){
+            document.hidden?(document.title="ヽ(●-`Д´-)ノ你要玩捉迷藏嘛",clearTimeout(st)):(document.title="(Ő∀Ő3)ノ好哦！",st=setTimeout(function(){document.title=OriginTitile},3e3))
+        })
+    </script>
+    
+    <!--樱花-->
+    <script type="text/javascript">
+        //只在桌面版网页启用特效
+        var windowWidth = $(window).width();
+        if (windowWidth > 768) {
+            document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>');
+        }
+        </script>
+        
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"rect":"opacity:0.7","log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
